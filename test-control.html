@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test de Control | JemcoTech Soluciones</title>
+
+  <link rel="icon" type="image/x-icon" href="fav.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .test-hero {
+      min-height: 18vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 2rem 1.5rem;
+      background: var(--deep);
+      text-align: center;
+    }
+    .test-hero h1 { font-family: var(--font-display); font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 900; margin: 0; }
+    .test-hero h1 span { color: var(--orange); }
+    .test-hero p { color: var(--muted); margin: 0.3rem 0 0; font-size: 0.85rem; }
+    .test-hero .back-link { display: inline-block; margin-bottom: 0.3rem; color: var(--orange); text-decoration: none; font-size: 0.8rem; }
+
+    .test-section { background: var(--black); padding: 1.5rem 2rem 3rem; }
+    .test-container { max-width: 1100px; margin: 0 auto; }
+
+    .test-layout {
+      display: grid;
+      grid-template-columns: 330px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .instructions-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem;
+    }
+    .instructions-panel h3 { font-family: var(--font-display); font-size: 0.85rem; color: var(--orange); margin: 0 0 0.8rem; }
+    .instructions-panel ul { color: var(--muted); font-size: 0.8rem; padding-left: 1rem; margin: 0 0 1rem; }
+    .instructions-panel li { margin-bottom: 0.5rem; }
+
+    .status-box {
+      padding: 0.8rem;
+      background: rgba(0,0,0,0.3);
+      border-radius: 6px;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .status-box p { color: var(--steel); font-size: 0.8rem; margin: 0; }
+
+    .button-checklist h4 { font-family: var(--font-display); font-size: 0.7rem; color: var(--orange); margin: 0 0 0.35rem; text-transform: uppercase; }
+    .button-checklist p { color: var(--muted); font-size: 0.75rem; margin: 0 0 0.75rem; line-height: 1.45; }
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+    .button-check {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      min-height: 34px;
+      padding: 0.45rem 0.5rem;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid transparent;
+      border-radius: 5px;
+      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    }
+    .button-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-width: 0;
+      color: var(--steel);
+      font-size: 0.7rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    .button-symbol {
+      flex: 0 0 auto;
+      display: inline-grid;
+      place-items: center;
+      width: 30px;
+      height: 28px;
+      color: #9ba8ae;
+      border: 1px solid #4b555b;
+      border-radius: 7px;
+      background: linear-gradient(180deg, #30363a, #1c2023);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 6px rgba(0,0,0,0.24);
+      font-family: Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .button-symbol.circle::before,
+    .button-symbol.square::before {
+      content: '';
+      width: 14px;
+      height: 14px;
+      border: 2px solid currentColor;
+      display: block;
+    }
+    .button-symbol.circle::before { border-radius: 50%; }
+    .button-symbol.square::before { border-radius: 3px; }
+    .button-symbol.triangle::before {
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 15px solid currentColor;
+      display: block;
+      transform: translateY(-1px);
+    }
+    .button-symbol.triangle::after {
+      content: '';
+      position: relative;
+      display: none;
+    }
+    .button-symbol.text {
+      width: auto;
+      min-width: 30px;
+      padding: 0 0.35rem;
+      border-radius: 4px;
+      font-family: var(--font-display);
+      font-size: 0.58rem;
+    }
+    .button-check strong {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-family: monospace;
+      font-size: 0.62rem;
+      font-weight: 600;
+    }
+    .button-check.active {
+      border-color: rgba(46,204,113,0.85);
+      background: rgba(46,204,113,0.12);
+      box-shadow: 0 0 12px rgba(46,204,113,0.2);
+    }
+    .button-check.done {
+      border-color: rgba(46,204,113,0.55);
+      background: rgba(46,204,113,0.08);
+    }
+    .button-check.done .button-label { color: #d8ffe8; }
+    .button-check.done .button-symbol {
+      color: #06160c;
+      border-color: #2ecc71;
+      background: linear-gradient(180deg, #43e784, #1fbf66);
+      box-shadow: 0 0 12px rgba(46,204,113,0.24);
+    }
+    .button-check.done strong { color: #2ecc71; }
+    .button-check.active strong { color: #2ecc71; }
+    .reset-checks {
+      width: 100%;
+      margin-top: 0.75rem;
+      background: transparent;
+      color: var(--steel);
+      border: 1px solid var(--steel-dark);
+      border-radius: 6px;
+      padding: 0.5rem;
+      font-family: var(--font-display);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .reset-checks:hover { border-color: var(--orange); color: var(--orange); }
+
+    .results-mini,
+    .touchpad-info,
+    .touchpad-panel,
+    .test-toggle:has(#touchpad-test) {
+      display: none !important;
+    }
+
+    .extra-tests { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .extra-tests h4 { font-family: var(--font-display); font-size: 0.7rem; color: var(--orange); margin: 0 0 0.6rem; }
+    .test-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem;
+      background: rgba(0,0,0,0.2);
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+    }
+    .test-toggle label { font-size: 0.75rem; color: var(--steel); }
+    .test-toggle input[type="checkbox"] {
+      width: 18px; height: 18px;
+      accent-color: var(--orange);
+      cursor: pointer;
+    }
+
+    .control-panel { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .controller-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 340px;
+      padding: 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .controller-empty {
+      width: 100%;
+      min-height: 280px;
+      display: grid;
+      place-items: center;
+      border: 1px dashed #343434;
+      border-radius: 10px;
+      color: var(--muted);
+      text-align: center;
+      padding: 2rem;
+    }
+    .controller-empty strong {
+      display: block;
+      color: var(--steel);
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+    }
+    .controller-empty span { font-size: 0.85rem; }
+
+    .controller-svg {
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+    }
+
+    /* SVG button press states */
+    .controller-svg .pressed path,
+    .controller-svg .pressed circle,
+    .controller-svg .pressed rect {
+      fill: var(--orange) !important;
+    }
+    .stick-press-effect {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.08s ease, r 0.08s ease, fill 0.08s ease;
+    }
+    .stick-press-effect.active {
+      opacity: 1;
+      fill: var(--orange);
+      filter: drop-shadow(0 0 10px rgba(255,140,0,0.75));
+    }
+
+    .circularity-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .circularity-modal.active { display: flex; }
+    .circularity-content {
+      background: var(--card);
+      border: 2px solid var(--orange);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      width: min(92vw, 720px);
+      max-width: 720px;
+    }
+    .circularity-content h3 { font-family: var(--font-display); color: var(--orange); margin: 0 0 1rem; }
+    .circularity-content p { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+    .circularity-canvas {
+      width: min(100%, 640px);
+      height: auto;
+      aspect-ratio: 2 / 1;
+      border-radius: 10px;
+      background: #0f0f0f;
+      border: 2px solid var(--border);
+      margin: 0 auto;
+    }
+    .circularity-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .metric-card {
+      background: rgba(0,0,0,0.28);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+      text-align: left;
+    }
+    .metric-card strong {
+      display: block;
+      color: var(--steel);
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+    }
+    .metric-card span {
+      color: var(--white);
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    .circularity-close {
+      margin-top: 1rem;
+      background: var(--orange);
+      color: #000;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .axes-display {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+    .stick-axis-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+      display: grid;
+      gap: 0.6rem;
+    }
+    .stick-axis-card h4 {
+      color: var(--orange);
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .stick-reticle {
+      position: relative;
+      width: min(138px, 100%);
+      aspect-ratio: 1;
+      margin: 0 auto;
+      border: 1px solid #394349;
+      border-radius: 50%;
+      background:
+        linear-gradient(90deg, transparent calc(50% - 1px), rgba(176,190,197,0.35) 50%, transparent calc(50% + 1px)),
+        linear-gradient(0deg, transparent calc(50% - 1px), rgba(176,190,197,0.35) 50%, transparent calc(50% + 1px)),
+        radial-gradient(circle, rgba(224,123,0,0.2) 0 4.4%, rgba(224,123,0,0.72) 4.6% 5.4%, transparent 5.8%),
+        #0d0f10;
+    }
+    .stick-dot {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--orange);
+      border: 2px solid #111;
+      box-shadow: 0 0 14px rgba(224,123,0,0.58);
+      transform: translate(-50%, -50%);
+    }
+    .stick-values {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+    .stick-value {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 5px;
+      padding: 0.38rem;
+      text-align: center;
+    }
+    .stick-value span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.56rem;
+      text-transform: uppercase;
+    }
+    .stick-value strong {
+      color: var(--white);
+      font-family: monospace;
+      font-size: 0.82rem;
+    }
+    .stick-axis-card.warning .stick-value strong {
+      color: #ff4500;
+      text-shadow: 0 0 5px rgba(255,69,0,0.3);
+    }
+
+    .report-btn { text-align: center; padding-top: 0.5rem; }
+
+    @media (max-width: 750px) {
+      .test-layout { grid-template-columns: 1fr; }
+      .instructions-panel { order: 2; }
+      .control-panel { order: 1; }
+      .axes-display { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stick-axis-card { padding: 0.55rem; }
+      .stick-axis-card h4 { font-size: 0.58rem; }
+      .stick-reticle { width: min(116px, 100%); }
+      .stick-value strong { font-size: 0.68rem; }
+      .circularity-metrics { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="https://wa.me/573045402914?text=Hola%20JemcoTech%2C%20necesito%20reparaci%C3%B3n%20de%20mi%20consola" class="whatsapp-btn" target="_blank">
+  <svg width="28" height="28" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <img src="logo.png" alt="Logo" class="logo-img">
+    <span class="nav-brand">Jemco<span>Tech</span></span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="index.html#servicios">Servicios</a></li>
+    <li><a href="test-control.html" class="active">Test de Control</a></li>
+    <li><a href="mis-reparaciones.html">Mis Reparaciones</a></li>
+    <li><a href="index.html#nosotros">Nosotros</a></li>
+    <li><a href="index.html#llegar">Como Llegar</a></li>
+    <li><a href="index.html#contacto" class="nav-cta">Contactar</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="test-hero">
+  <div>
+    <a href="index.html" class="back-link">Volver</a>
+    <h1>Test de <span>Control</span></h1>
+    <p>Conecta tu control y presiona cualquier boton</p>
+  </div>
+</div>
+
+<section class="test-section">
+  <div class="test-container">
+    <div class="test-layout">
+      <div class="instructions-panel">
+        <h3>Instrucciones</h3>
+        <ul>
+          <li>Conecta por USB o Bluetooth</li>
+          <li>Presiona <strong>cualquier boton</strong></li>
+          <li>Los valores en <span style="color:#ff4500">rojo</span> = drift</li>
+        </ul>
+
+        <div class="status-box">
+          <p id="status-text">Conecta tu control</p>
+        </div>
+
+        <div class="button-checklist">
+          <h4>Validacion de botones</h4>
+          <p>Presiona cada boton. Cuando responda, quedara marcado como probado.</p>
+          <div class="button-grid" id="button-checklist">
+            <div class="button-check" data-button-check="0"><span class="button-label"><span class="button-symbol">X</span>Cross</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="1"><span class="button-label"><span class="button-symbol circle"></span>Circle</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="2"><span class="button-label"><span class="button-symbol square"></span>Square</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="3"><span class="button-label"><span class="button-symbol triangle"></span>Triangle</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="4"><span class="button-label"><span class="button-symbol text">L1</span>L1</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="5"><span class="button-label"><span class="button-symbol text">R1</span>R1</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="6"><span class="button-label"><span class="button-symbol text">L2</span>L2</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="7"><span class="button-label"><span class="button-symbol text">R2</span>R2</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="8"><span class="button-label"><span class="button-symbol text">SH</span>Share</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="9"><span class="button-label"><span class="button-symbol text">OP</span>Options</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="10"><span class="button-label"><span class="button-symbol text">L3</span>L3</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="11"><span class="button-label"><span class="button-symbol text">R3</span>R3</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="12"><span class="button-label"><span class="button-symbol text">UP</span>Up</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="13"><span class="button-label"><span class="button-symbol text">DW</span>Down</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="14"><span class="button-label"><span class="button-symbol text">LT</span>Left</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="15"><span class="button-label"><span class="button-symbol text">RT</span>Right</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="16"><span class="button-label"><span class="button-symbol text">PS</span>Home</span><strong>Pendiente</strong></div>
+            <div class="button-check" data-button-check="17"><span class="button-label"><span class="button-symbol text">TO</span>Touch</span><strong>Pendiente</strong></div>
+          </div>
+          <button type="button" class="reset-checks" onclick="resetButtonValidation()">Reiniciar validacion</button>
+        </div>
+
+        <div class="results-mini">
+          <h4>Resultados</h4>
+          <div class="result-row"><span>Stick Izq</span><span class="status" id="result-l">—</span></div>
+          <div class="result-row"><span>Stick Der</span><span class="status" id="result-r">—</span></div>
+          <div class="result-row"><span>Click L3</span><span class="status" id="result-l3">—</span></div>
+          <div class="result-row"><span>Click R3</span><span class="status" id="result-r3">—</span></div>
+          <div class="result-row"><span>L1 / R1</span><span class="status" id="result-shoulders">—</span></div>
+          <div class="result-row"><span>D-Pad</span><span class="status" id="result-dpad">—</span></div>
+          <div class="result-row"><span>Touchpad</span><span class="status" id="result-touchpad">—</span></div>
+        </div>
+
+        <div class="extra-tests">
+          <h4>Pruebas Extra</h4>
+          <div class="test-toggle">
+            <label>Test circularidad</label>
+            <input type="checkbox" id="circularity-test" onchange="toggleCircularity()">
+          </div>
+          <div class="test-toggle">
+            <label>Probar vibración</label>
+            <input type="checkbox" id="vibration-test" onchange="toggleVibration()">
+          </div>
+          <div class="test-toggle">
+            <label>Test touchpad PS4</label>
+            <input type="checkbox" id="touchpad-test" onchange="toggleTouchpad()">
+          </div>
+        </div>
+
+        <div class="touchpad-info" id="touchpad-info">
+          <div class="axis-box"><h5>Touch X</h5><p id="axis-6">—</p></div>
+          <div class="axis-box"><h5>Touch Y</h5><p id="axis-7">—</p></div>
+          <div class="axis-box"><h5>Touch Click</h5><p id="btn-17">OFF</p></div>
+        </div>
+      </div>
+
+      <div class="control-panel">
+        <div class="circularity-modal" id="circularity-modal">
+        <div class="circularity-content">
+          <h3>Test de Circularidad</h3>
+          <p>Mueve cada stick contra el borde haciendo círculos completos. El error debe mantenerse bajo y la cobertura cerca del 100%.</p>
+          <canvas class="circularity-canvas" id="circularity-canvas" width="640" height="320"></canvas>
+          <div class="circularity-metrics">
+            <div class="metric-card"><strong>Stick izquierdo</strong><span id="left-circularity-metric">Cobertura 0% · Error —</span></div>
+            <div class="metric-card"><strong>Stick derecho</strong><span id="right-circularity-metric">Cobertura 0% · Error —</span></div>
+          </div>
+          <button class="circularity-close" onclick="closeCircularity()">Cerrar</button>
+        </div>
+      </div>
+
+      <div class="controller-wrapper">
+          <div class="controller-empty" id="controller-empty">
+            <div>
+              <strong>Esperando control</strong>
+              <span>Conecta el mando por USB o Bluetooth y presiona cualquier boton.</span>
+            </div>
+          </div>
+          <svg class="controller-svg" id="controller" viewBox="0 0 640 518" style="display: none;">
+            <g id="Controller_infills">
+              <path d="M622.95,326.87c-29.09-128.96-37.19-148.52-47.08-165.39-6.92-11.81-15.21-23.77-19.53-29.84-1.47-2.07-3.77-3.37-6.31-3.57-38.85-3.04-71.02-2.57-79.95-2.35-1.06.03-2.06.45-2.82,1.18l-2.73,2.63c-1.73,1.66-4,2.58-6.4,2.58H181.88c-2.4,0-4.67-.92-6.4-2.58l-2.73-2.63c-.76-.74-1.77-1.16-2.82-1.18-8.93-.22-41.11-.69-79.95,2.35-2.54.2-4.84,1.5-6.32,3.57-4.32,6.07-12.61,18.03-19.53,29.84-9.88,16.88-17.99,36.43-47.08,165.43-7.25,34.62-20.46,118.95,13.61,153.45,14.34,14.52,34.26,20.73,53.29,16.6,23.23-5.03,42.3-24.84,53.71-55.79,5.08-13.79,9.26-25.52,12.62-34.94,13.92-39.03,17.22-48.31,30.19-51.55l.3-.08h.31s77.55.17,77.55.17h122.75l77.86-.17.3.08c12.97,3.24,16.27,12.52,30.19,51.55,3.36,9.43,7.54,21.16,12.62,34.94,11.4,30.95,30.48,50.76,53.71,55.79,19.04,4.12,38.96-2.09,53.29-16.6,34.07-34.5,20.86-118.83,13.6-153.49Z" fill="#1a1a1a"/>
+              <circle cx="220" cy="314.85" r="54.92" fill="#0f0f0f" id="stick-left-bg"/>
+              <circle cx="420" cy="314.85" r="54.92" fill="#0f0f0f" id="stick-right-bg"/>
+            </g>
+            <g id="Button_infills">
+              <g id="Down_infill"><path d="M104.86,265.19v-6.44c0-5.03,1.96-9.87,5.46-13.49l7.64-7.89c3-3.09,8-2.99,10.87.22l6.95,7.79c3.17,3.55,4.92,8.14,4.92,12.9v6.9c0,6.43-5.21,11.64-11.64,11.64h-12.57c-6.43,0-11.64-5.21-11.64-11.64Z" fill="#222" class="btn-infill"/></g>
+              <g id="PS_infill"><circle cx="320.16" cy="314.85" r="13.82" fill="#222" class="btn-infill"/></g>
+              <g id="Right_infill"><path d="M163.28,242.61h-6.44c-5.03,0-9.87-1.96-13.49-5.46l-7.89-7.64c-3.09-3-2.99-8,.22-10.87l7.79-6.95c3.55-3.17,8.14-4.92,12.9-4.92h6.9c6.43,0,11.64,5.21,11.64,11.64v12.57c0,6.43-5.21,11.64-11.64,11.64Z" fill="#222" class="btn-infill"/></g>
+              <g id="Left_infill"><path d="M82.28,206.77h6.44c5.03,0,9.87,1.96,13.49,5.46l7.89,7.64c3.09,3,2.99,8-.22,10.87l-7.79,6.95c-3.55,3.17-8.14,4.92-12.9,4.92h-6.9c-6.43,0-11.64-5.21-11.64-11.64v-12.57c0-6.43,5.21-11.64,11.64-11.64Z" fill="#222" class="btn-infill"/></g>
+              <g id="Up_infill"><path d="M140.7,184.19v6.44c0,5.03-1.96,9.87-5.46,13.49l-7.64,7.89c-3,3.09-8,2.99-10.87-.22l-6.95-7.79c-3.17-3.55-4.92-8.14-4.92-12.9v-6.9c0-6.43,5.21-11.64,11.64-11.64h12.57c6.43,0,11.64,5.21,11.64,11.64Z" fill="#222" class="btn-infill"/></g>
+              <g id="Triangle_infill"><circle cx="517.22" cy="178.98" r="19.67" fill="#222" class="btn-infill"/></g>
+              <g id="Cross_infill"><circle cx="517.22" cy="270.62" r="19.67" fill="#222" class="btn-infill"/></g>
+              <g id="Circle_infill"><circle cx="563.04" cy="224.8" r="19.67" fill="#222" class="btn-infill"/></g>
+              <g id="Square_infill"><circle cx="471.4" cy="224.8" r="19.67" fill="#222" class="btn-infill"/></g>
+              <g id="Options_infill"><rect x="437.88" y="144.01" width="16.52" height="32.55" rx="8.26" fill="#222" class="btn-infill"/></g>
+              <g id="Create_infill"><rect x="185.6" y="144.01" width="16.52" height="32.55" rx="8.26" fill="#222" class="btn-infill"/></g>
+              <g id="R2_infill"><path d="M472.73,80.69l2.79-35.54c1.25-15.98,14.77-28.21,30.8-27.85h0c13.24.3,24.75,9.19,28.38,21.93l11.58,40.63c.77,2.71-1.26,5.4-4.08,5.4h-65.24c-2.47,0-4.42-2.11-4.23-4.57Z" fill="#222" class="btn-infill"/></g>
+              <g id="L2_infill"><path d="M167.27,80.69l-2.79-35.54c-1.25-15.98-14.77-28.21-30.8-27.85h0c-13.24.3-24.75,9.19-28.38,21.93l-11.58,40.63c-.77,2.71,1.26,5.4,4.08,5.4h65.24c2.47,0,4.42-2.11,4.23-4.57Z" fill="#222" class="btn-infill"/></g>
+              <g id="R1_infill"><path d="M551.66,128.2l-2.7-.21c-39.06-3.06-73.88-2.44-74.23-2.43l-2.55.05v-6.31c0-4.32,2.79-8.08,6.94-9.35,32.06-9.8,57.38-.95,66.78,3.31,3.49,1.58,5.75,5.07,5.75,8.9v6.04Z" fill="#333" class="btn-infill"/></g>
+              <g id="L1_infill"><path d="M88.34,128.2v-6.04c0-3.82,2.26-7.31,5.75-8.9,9.4-4.26,34.72-13.11,66.78-3.31,4.15,1.27,6.94,5.03,6.94,9.35v6.3l-2.54-.04c-35.46-.51-73.86,2.4-74.25,2.43l-2.69.21Z" fill="#333" class="btn-infill"/></g>
+            </g>
+            <g id="Trackpad_infill"><path d="M419.35,234.87v-102.38c0-2.12-1.73-3.85-3.85-3.85h-191.01c-2.12,0-3.85,1.73-3.85,3.85v102.38c0,4.13,3.36,7.5,7.5,7.5h183.71c4.13,0,7.5-3.36,7.5-7.5Z" fill="#0f0f0f"/></g>
+            <g id="L3"><circle cx="219.94" cy="314.85" r="36.86" fill="#1a1a1a" class="btn-infill"/></g>
+            <g id="R3"><circle cx="420.06" cy="314.85" r="36.86" fill="#1a1a1a" class="btn-infill"/></g>
+            <g id="TriggerPercentages">
+              <text id="L2_percentage" x="133" y="70" font-family="Arial" font-size="19" font-weight="bold" fill="#ff4500" text-anchor="middle" opacity="0">0%</text>
+              <text id="R2_percentage" x="507" y="70" font-family="Arial" font-size="19" font-weight="bold" fill="#ff4500" text-anchor="middle" opacity="0">0%</text>
+            </g>
+            <g id="Sticks" fill="none" stroke="#333" stroke-width="3">
+              <circle cx="220" cy="314.85" r="54.92"/>
+              <circle cx="420" cy="314.85" r="54.92"/>
+            </g>
+            <g id="Sticks_inner" fill="#222" stroke="#444" stroke-width="2">
+              <circle cx="220" cy="314.85" r="36.86" id="stick-left-inner"/>
+              <circle cx="420" cy="314.85" r="36.86" id="stick-right-inner"/>
+            </g>
+            <g id="StickPressEffects">
+              <circle cx="220" cy="314.85" r="15" fill="#e07b00" class="stick-press-effect" id="L3_press_effect"/>
+              <circle cx="420" cy="314.85" r="15" fill="#e07b00" class="stick-press-effect" id="R3_press_effect"/>
+            </g>
+            <g id="Outline">
+              <g id="Button_outlines">
+                <path id="L2_outline" d="M163.04,87.76h-65.24c-2.13,0-4.09-.98-5.38-2.68s-1.69-3.86-1.1-5.91l11.58-40.63c3.95-13.88,16.3-23.42,30.73-23.74,17.35-.38,31.99,12.85,33.35,30.15l2.79,35.54c.15,1.87-.5,3.73-1.77,5.1-1.27,1.38-3.08,2.16-4.95,2.16Z" fill="none" stroke="#444" stroke-width="2"/>
+                <path id="R2_outline" d="M542.2,87.76h-65.24c-1.87,0-3.68-.79-4.95-2.16-1.27-1.38-1.92-3.24-1.77-5.1l2.79-35.54c1.36-17.3,16.01-30.5,33.35-30.15,14.42.32,26.77,9.86,30.73,23.74l11.58,40.63c.58,2.05.18,4.21-1.1,5.91s-3.25,2.68-5.38,2.68Z" fill="none" stroke="#444" stroke-width="2"/>
+                <path id="Create_outline" d="M193.86,179.05c-5.93,0-10.76-4.83-10.76-10.76v-16.03c0-5.93,4.83-10.76,10.76-10.76s10.76,4.83,10.76,10.76v16.03c0,5.93-4.83,10.76-10.76,10.76Z" fill="none" stroke="#444" stroke-width="2"/>
+                <path id="Options_outline" d="M446.14,179.05c-5.93,0-10.76-4.83-10.76-10.76v-16.03c0-5.93,4.83-10.76,10.76-10.76s10.76,4.83,10.76,10.76v16.03c0,5.93-4.83,10.76-10.76,10.76Z" fill="none" stroke="#444" stroke-width="2"/>
+                <path id="Left_outline" d="M89.18,245.11h-6.9c-7.8,0-14.14-6.34-14.14-14.14v-12.57c0-7.8,6.34-14.14,14.14-14.14h6.44c5.71,0,11.12,2.19,15.23,6.17l7.89,7.64c1.97,1.92,3.07,4.59,3.01,7.34-.06,2.75-1.26,5.37-3.31,7.2l-7.79,6.95c-4.01,3.58-9.19,5.55-14.57,5.55Z" fill="none" stroke="#444" stroke-width="2"/>
+                <path id="Right_outline" d="M163.28,245.11h-6.44c-5.71,0-11.12-2.19-15.23-6.17l-7.89-7.64c-1.97-1.92-3.07-4.59-3.01-7.34.06-2.75,1.26-5.37,3.31-7.2l7.79-6.95c4.01-3.58,9.19-5.55,14.57-5.55h6.9c7.8,0,14.14,6.34,14.14,14.14v12.57c0,7.8-6.34,14.14-14.14,14.14Z" fill="none" stroke="#444" stroke-width="2"/>
+                <path id="Down_outline" d="M129.07,279.32h-12.57c-7.8,0-14.14-6.34-14.14-14.14v-6.44c0-5.71,2.19-11.12,6.17-15.23l7.64-7.89c1.92-1.97,4.59-3.05,7.34-3.01,2.75.06,5.37,1.26,7.2,3.31l6.95,7.79c3.58,4.01,5.55,9.19,5.55,14.57v6.9c0,7.8-6.34,14.14-14.14,14.14Z" fill="none" stroke="#444" stroke-width="2"/>
+                <path id="Up_outline" d="M122.26,216.76c-.07,0-.13,0-.2,0-2.75-.06-5.37-1.26-7.2-3.31l-6.95-7.79c-3.58-4.01-5.55-9.19-5.55-14.57v-6.9c0-7.8,6.34-14.14,14.14-14.14h12.57c7.8,0,14.14,6.34,14.14,14.14v6.44c0,5.71-2.19,11.12-6.17,15.23l-7.64,7.89c-1.87,1.92-4.46,3.02-7.13,3.02Z" fill="none" stroke="#444" stroke-width="2"/>
+                <path id="Cross_outline" d="M517.22,292.79c-12.23,0-22.17-9.95-22.17-22.17s9.95-22.17,22.17-22.17,22.17,9.95,22.17,22.17-9.95,22.17-22.17,22.17Z" fill="none" stroke="#444" stroke-width="2"/>
+                <path id="Triangle_outline" d="M517.22,201.15c-12.23,0-22.17-9.95-22.17-22.17s9.95-22.17,22.17-22.17,22.17,9.95,22.17,22.17-9.95,22.17-22.17,22.17Z" fill="none" stroke="#444" stroke-width="2"/>
+                <path id="Circle_outline" d="M563.04,246.97c-12.23,0-22.17-9.95-22.17-22.17s9.95-22.17,22.17-22.17,22.17,9.95,22.17,22.17-9.95,22.17-22.17,22.17Z" fill="none" stroke="#444" stroke-width="2"/>
+                <path id="Square_outline" d="M471.4,246.97c-12.23,0-22.17-9.95-22.17-22.17s9.95-22.17,22.17-22.17,22.17,9.95,22.17,22.17-9.95,22.17-22.17,22.17Z" fill="none" stroke="#444" stroke-width="2"/>
+                <path id="PS_outline" d="M320.16,331.18c-9,0-16.32-7.32-16.32-16.32s7.32-16.32,16.32-16.32,16.32,7.32,16.32,16.32-7.32,16.32-16.32,16.32Z" fill="none" stroke="#444" stroke-width="2"/>
+              </g>
+              <g id="L1_outline" fill="none" stroke="#444" stroke-width="2">
+                <path d="M88.34,128.2v-6.04c0-3.82,2.26-7.31,5.75-8.9,9.4-4.26,34.72-13.11,66.78-3.31,4.15,1.27,6.94,5.03,6.94,9.35v6.3l-2.54-.04c-35.46-.51-73.86,2.4-74.25,2.43l-2.69.21Z"/>
+              </g>
+              <g id="R1_outline" fill="none" stroke="#444" stroke-width="2">
+                <path d="M551.66,128.2l-2.7-.21c-39.06-3.06-73.88-2.44-74.23-2.43l-2.55.05v-6.31c0-4.32,2.79-8.08,6.94-9.35,32.06-9.8,57.38-.95,66.78,3.31,3.49,1.58,5.75,5.07,5.75,8.9v6.04Z"/>
+              </g>
+              <path d="M72.26,503.22c-16.56,0-32.79-6.81-45.17-19.34-35.77-36.22-22.36-122.58-14.94-158.03,29.26-129.74,37.53-149.6,47.65-166.89,7.02-11.98,15.4-24.07,19.78-30.22,2.33-3.28,5.98-5.34,10-5.65,39.08-3.06,71.47-2.58,80.46-2.37,2.31.06,4.5.97,6.17,2.58l2.73,2.63c.79.76,1.83,1.18,2.93,1.18h36.97v5h-36.97c-2.4,0-4.67-.92-6.4-2.58l-2.73-2.63c-.76-.74-1.77-1.16-2.82-1.18-8.93-.21-41.11-.69-79.95,2.35-2.54.2-4.84,1.5-6.32,3.57-4.32,6.07-12.61,18.03-19.53,29.84-9.88,16.88-17.99,36.43-47.08,165.43-7.25,34.62-20.46,118.95,13.61,153.45,14.34,14.52,34.26,20.73,53.29,16.6,23.23-5.03,42.3-24.84,53.71-55.79,5.08-13.79,9.26-25.52,12.62-34.94,13.92-39.03,17.22-48.31,30.19-51.55l1.21,4.85c-10.08,2.52-12.69,9.11-26.69,48.38-3.36,9.44-7.55,21.18-12.64,34.99-12.01,32.61-32.38,53.55-57.34,58.95-4.23.91-8.5,1.36-12.74,1.36Z" fill="none" stroke="#444" stroke-width="3"/>
+              <path d="M567.74,503.22c-4.25,0-8.51-.45-12.74-1.36-24.96-5.4-45.33-26.34-57.34-58.95-5.09-13.81-9.28-25.56-12.64-34.99-14-39.27-16.61-45.86-26.69-48.38l1.21-4.85c12.97,3.24,16.27,12.52,30.19,51.55,3.36,9.43,7.54,21.16,12.62,34.94,11.4,30.95,30.48,50.76,53.71,55.79,19.03,4.12,38.96-2.09,53.29-16.6,34.07-34.5,20.86-118.83,13.6-153.49-29.09-128.96-37.19-148.52-47.08-165.39-6.92-11.81-15.21-23.77-19.53-29.84-1.47-2.07-3.77-3.37-6.31-3.57-38.85-3.04-71.02-2.57-79.95-2.35-1.06.03-2.06.45-2.82,1.18l-2.73,2.63c-1.73,1.66-4,2.58-6.4,2.58h-36.97v-5h36.97c1.1,0,2.14-.42,2.93-1.18l2.73-2.63c1.67-1.61,3.86-2.52,6.17-2.58,8.99-.22,41.38-.69,80.46,2.37,4.02.31,7.66,2.37,10,5.65,4.37,6.14,12.76,18.23,19.78,30.22,10.13,17.29,18.39,37.15,47.65,166.86,7.43,35.48,20.84,121.84-14.93,158.06-12.37,12.53-28.61,19.34-45.17,19.34Z" fill="none" stroke="#444" stroke-width="3"/>
+              <g id="Speaker_grill" fill="#333">
+                <circle cx="297.85" cy="262.87" r="2.73"/>
+                <circle cx="309.07" cy="262.87" r="2.73"/>
+                <circle cx="320.29" cy="262.87" r="2.73"/>
+                <circle cx="331.51" cy="262.87" r="2.73"/>
+                <circle cx="303.46" cy="270.62" r="2.73"/>
+                <circle cx="314.68" cy="270.62" r="2.73"/>
+                <circle cx="325.9" cy="270.62" r="2.73"/>
+                <circle cx="337.12" cy="270.62" r="2.73"/>
+                <circle cx="342.73" cy="262.87" r="2.73"/>
+              </g>
+              <g id="Trackpad_outline">
+                <path d="M415.51,123.65h-191.01c-4.88,0-8.85,3.97-8.85,8.85v102.38c0,6.89,5.61,12.5,12.5,12.5h183.71c6.89,0,12.5-5.61,12.5-12.5v-102.38c0-4.88-3.97-8.85-8.85-8.85Z" fill="none" stroke="#444" stroke-width="2"/>
+              </g>
+              <circle cx="219.94" cy="314.85" r="39.36" fill="none" stroke="#444" stroke-width="2" id="L3_outline"/>
+              <circle cx="420.06" cy="314.85" r="39.36" fill="none" stroke="#444" stroke-width="2" id="R3_outline"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="axes-display" id="axes-display" style="display: none;">
+          <div class="stick-axis-card" id="left-stick-card">
+            <h4>Stick izquierdo</h4>
+            <div class="stick-reticle">
+              <span class="stick-dot" id="left-stick-dot"></span>
+            </div>
+            <div class="stick-values">
+              <div class="stick-value"><span>X</span><strong id="axis-0">0.00000</strong></div>
+              <div class="stick-value"><span>Y</span><strong id="axis-1">0.00000</strong></div>
+            </div>
+          </div>
+          <div class="stick-axis-card" id="right-stick-card">
+            <h4>Stick derecho</h4>
+            <div class="stick-reticle">
+              <span class="stick-dot" id="right-stick-dot"></span>
+            </div>
+            <div class="stick-values">
+              <div class="stick-value"><span>X</span><strong id="axis-2">0.00000</strong></div>
+              <div class="stick-value"><span>Y</span><strong id="axis-3">0.00000</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="touchpad-panel" id="touchpad-panel">
+          <div class="touchpad-surface" id="touchpad-surface">
+            <span class="touchpad-dot" id="touchpad-dot"></span>
+          </div>
+          <button type="button" class="hid-touch-button" id="hid-touch-button" onclick="connectTouchpadHid()">Leer posición con WebHID</button>
+          <p class="hid-touch-status" id="hid-touch-status">Opcional para DualShock 4: permite leer coordenadas reales si el navegador autoriza HID.</p>
+          <p class="touchpad-note" id="touchpad-note">Presiona el panel táctil del DualShock 4. Si el navegador expone coordenadas adicionales, también se verán aquí; si no, el click del touchpad se valida con el botón 17.</p>
+        </div>
+
+        <div class="report-btn">
+          <a href="#" class="btn-primary" id="report-btn" style="display: none;" onclick="generateReport()">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            Enviar Reporte
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="logo.png" alt="Logo JemcoTech" class="logo-footer">
+      <span class="footer-brand-name">JemcoTech Soluciones</span>
+    </div>
+    <p class="footer-copy">© 2026 <span>JemcoTech Soluciones</span>. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+let gamepad = null;
+const threshold = 0.11;
+
+const buttonMap = {
+  0: 'Cross_infill',
+  1: 'Circle_infill',
+  2: 'Square_infill',
+  3: 'Triangle_infill',
+  4: 'L1_infill',
+  5: 'R1_infill',
+  6: 'L2_infill',
+  7: 'R2_infill',
+  8: 'Create_infill',
+  9: 'Options_infill',
+  12: 'Up_infill',
+  13: 'Down_infill',
+  14: 'Left_infill',
+  15: 'Right_infill',
+  16: 'PS_infill',
+  17: 'Trackpad_infill'
+};
+
+let circularityActive = false;
+const circularitySamples = 64;
+let circularityLeft = Array(circularitySamples).fill(0);
+let circularityRight = Array(circularitySamples).fill(0);
+let touchedButtons = new Set();
+let hidTouchDevice = null;
+let hidTouchState = { active: false, x: null, y: null, updatedAt: 0 };
+
+const requiredButtons = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+
+function updateButtonValidation(activeButtons) {
+  requiredButtons.forEach(index => {
+    const item = document.querySelector(`[data-button-check="${index}"]`);
+    if (!item) return;
+    const status = item.querySelector('strong');
+    const isActive = activeButtons.has(index);
+    const isDone = touchedButtons.has(index);
+
+    item.classList.toggle('active', isActive);
+    item.classList.toggle('done', isDone);
+    if (status) status.textContent = isActive ? 'Activo' : (isDone ? 'Probado' : 'Pendiente');
+  });
+}
+
+function resetButtonValidation() {
+  touchedButtons.clear();
+  updateButtonValidation(new Set());
+}
+
+window.resetButtonValidation = resetButtonValidation;
+
+function toggleCircularity() {
+  const checked = document.getElementById('circularity-test').checked;
+  if (checked && !gamepad) {
+    document.getElementById('circularity-test').checked = false;
+    alert('⚠️ Conecta un control primero');
+    return;
+  }
+  if (checked) {
+    circularityActive = true;
+    circularityLeft = Array(circularitySamples).fill(0);
+    circularityRight = Array(circularitySamples).fill(0);
+    document.getElementById('left-circularity-metric').textContent = 'Cobertura 0% · Error —';
+    document.getElementById('right-circularity-metric').textContent = 'Cobertura 0% · Error —';
+    document.getElementById('circularity-modal').classList.add('active');
+    drawCircularity();
+  } else {
+    document.getElementById('circularity-modal').classList.remove('active');
+    circularityActive = false;
+  }
+}
+
+function closeCircularity() {
+  document.getElementById('circularity-test').checked = false;
+  document.getElementById('circularity-modal').classList.remove('active');
+  circularityActive = false;
+}
+
+function drawCircularity() {
+  if (!circularityActive) return;
+
+  const canvas = document.getElementById('circularity-canvas');
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  const radius = Math.min(w, h) * 0.34;
+  const cxLeft = w * 0.25;
+  const cxRight = w * 0.75;
+  const cy = h * 0.5;
+
+  ctx.fillStyle = '#0f0f0f';
+  ctx.fillRect(0, 0, w, h);
+
+  const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+  let gp = null;
+  for (let i = 0; i < gamepads.length; i++) {
+    if (gamepads[i]) { gp = gamepads[i]; break; }
+  }
+
+  if (gp) {
+    sampleCircularity(gp.axes[0] || 0, gp.axes[1] || 0, circularityLeft);
+    sampleCircularity(gp.axes[2] || 0, gp.axes[3] || 0, circularityRight);
+  }
+
+  drawStickCircularity(ctx, cxLeft, cy, radius, 'Stick izquierdo', circularityLeft, gp?.axes[0] || 0, gp?.axes[1] || 0, '#ff8c00');
+  drawStickCircularity(ctx, cxRight, cy, radius, 'Stick derecho', circularityRight, gp?.axes[2] || 0, gp?.axes[3] || 0, '#00c8ff');
+  updateCircularityMetric('left-circularity-metric', circularityLeft);
+  updateCircularityMetric('right-circularity-metric', circularityRight);
+
+  requestAnimationFrame(drawCircularity);
+}
+
+function sampleCircularity(x, y, data) {
+  const distance = Math.min(1.2, Math.hypot(x, y));
+  if (distance < 0.55) return;
+  let angle = Math.atan2(y, x);
+  if (angle < 0) angle += Math.PI * 2;
+  const index = Math.min(circularitySamples - 1, Math.floor((angle / (Math.PI * 2)) * circularitySamples));
+  data[index] = Math.max(data[index], distance);
+}
+
+function calculateCircularityStats(data) {
+  const active = data.filter(value => value > 0.55);
+  const coverage = Math.round((active.length / circularitySamples) * 100);
+  if (active.length < 8) return { coverage, error: null };
+  const sum = active.reduce((acc, value) => acc + Math.pow(value - 1, 2), 0);
+  return { coverage, error: Math.sqrt(sum / active.length) * 100 };
+}
+
+function updateCircularityMetric(id, data) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const stats = calculateCircularityStats(data);
+  el.textContent = `Cobertura ${stats.coverage}% · Error ${stats.error === null ? '—' : stats.error.toFixed(1) + '%'}`;
+  el.style.color = stats.error !== null && stats.error <= 12 && stats.coverage >= 85 ? '#2ecc71' : 'var(--white)';
+}
+
+function drawStickCircularity(ctx, cx, cy, radius, label, data, x, y, color) {
+  ctx.save();
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 1;
+  for (let ring = 0.25; ring <= 1; ring += 0.25) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius * ring, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  ctx.beginPath();
+  ctx.moveTo(cx - radius, cy);
+  ctx.lineTo(cx + radius, cy);
+  ctx.moveTo(cx, cy - radius);
+  ctx.lineTo(cx, cy + radius);
+  ctx.stroke();
+
+  for (let i = 0; i < circularitySamples; i++) {
+    const value = data[i];
+    if (value <= 0.55) continue;
+    const a0 = i * Math.PI * 2 / circularitySamples;
+    const a1 = (i + 1) * Math.PI * 2 / circularitySamples;
+    const deviation = Math.min(1, Math.abs(value - 1) / 0.28);
+    ctx.strokeStyle = deviation < 0.35 ? '#2ecc71' : deviation < 0.7 ? '#ff8c00' : '#ff4500';
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.arc(cx, cy, Math.min(radius * 1.08, radius * value), a0, a1);
+    ctx.stroke();
+  }
+
+  const px = cx + Math.max(-1, Math.min(1, x)) * radius;
+  const py = cy + Math.max(-1, Math.min(1, y)) * radius;
+  ctx.strokeStyle = '#555';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(px, py);
+  ctx.stroke();
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc(px, py, 8, 0, Math.PI * 2);
+  ctx.fill();
+
+  const stats = calculateCircularityStats(data);
+  ctx.fillStyle = '#b0bec5';
+  ctx.font = 'bold 15px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText(label, cx, 26);
+  ctx.fillStyle = '#fff';
+  ctx.font = '13px Arial';
+  ctx.fillText(`${stats.coverage}% · ${stats.error === null ? '—' : stats.error.toFixed(1) + '% error'}`, cx, cy + radius + 28);
+  ctx.restore();
+}
+
+async function toggleVibration() {
+  const checked = document.getElementById('vibration-test').checked;
+  if (!gamepad) {
+    document.getElementById('vibration-test').checked = false;
+    alert('⚠️ Conecta un control primero');
+    return;
+  }
+  
+  if (checked && gamepad.vibrationActuator) {
+    try {
+      await gamepad.vibrationActuator.playEffect('dual-rumble', { duration: 500, strongMagnitude: 1.0, weakMagnitude: 1.0 });
+      setTimeout(() => document.getElementById('vibration-test').checked = false, 500);
+    } catch(e) {
+      alert('⚠️ Tu control no soporta vibración');
+      document.getElementById('vibration-test').checked = false;
+    }
+  }
+}
+
+function toggleTouchpad() {
+  const checked = document.getElementById('touchpad-test').checked;
+  const touchpadInfo = document.getElementById('touchpad-info');
+  const touchpadPanel = document.getElementById('touchpad-panel');
+  if (checked) {
+    touchpadInfo.classList.add('visible');
+    touchpadPanel.classList.add('visible');
+  } else {
+    touchpadInfo.classList.remove('visible');
+    touchpadPanel.classList.remove('visible');
+  }
+}
+
+function readTouchpadState(gp) {
+  const touchClick = Boolean(gp.buttons[17]?.pressed || gp.buttons[17]?.value > 0.5);
+  const hidFresh = hidTouchState.active && performance.now() - hidTouchState.updatedAt < 350;
+  if (hidFresh) {
+    return {
+      touchClick,
+      x: hidTouchState.x,
+      y: hidTouchState.y,
+      hasCoordinates: true,
+      touching: true,
+      source: 'WebHID DualShock 4'
+    };
+  }
+
+  const candidates = [
+    [6, 7],
+    [14, 15],
+    [16, 17],
+    [18, 19]
+  ];
+  let x = null;
+  let y = null;
+  let source = 'botón 17';
+
+  for (const [xIndex, yIndex] of candidates) {
+    const ax = gp.axes[xIndex];
+    const ay = gp.axes[yIndex];
+    if (Number.isFinite(ax) && Number.isFinite(ay)) {
+      x = ax;
+      y = ay;
+      source = `ejes ${xIndex}/${yIndex}`;
+      break;
+    }
+  }
+
+  const hasCoordinates = Number.isFinite(x) && Number.isFinite(y);
+  const touching = touchClick || (hasCoordinates && (Math.abs(x) > 0.02 || Math.abs(y) > 0.02));
+  return { touchClick, x, y, hasCoordinates, touching, source };
+}
+
+async function connectTouchpadHid() {
+  const status = document.getElementById('hid-touch-status');
+  if (!('hid' in navigator)) {
+    status.textContent = 'WebHID no está disponible en este navegador. Usa Chrome o Edge sobre localhost/HTTPS.';
+    return;
+  }
+
+  try {
+    status.textContent = 'Selecciona tu DualShock 4 en la ventana del navegador.';
+    const devices = await navigator.hid.requestDevice({
+      filters: [
+        { vendorId: 0x054c, productId: 0x05c4 },
+        { vendorId: 0x054c, productId: 0x09cc }
+      ]
+    });
+
+    if (!devices.length) {
+      status.textContent = 'No se seleccionó ningún control HID.';
+      return;
+    }
+
+    hidTouchDevice = devices[0];
+    if (!hidTouchDevice.opened) await hidTouchDevice.open();
+    hidTouchDevice.addEventListener('inputreport', handleHidInputReport);
+    status.textContent = 'WebHID conectado. Toca o desliza el touchpad para ver la posición.';
+  } catch (error) {
+    status.textContent = 'No se pudo activar WebHID. El navegador o el sistema puede haber bloqueado el acceso.';
+  }
+}
+
+function handleHidInputReport(event) {
+  const parsed = parseDs4TouchReport(event.data);
+  if (!parsed) return;
+  hidTouchState = {
+    active: parsed.active,
+    x: parsed.x,
+    y: parsed.y,
+    updatedAt: performance.now()
+  };
+}
+
+function parseDs4TouchReport(view) {
+  const candidates = [32, 33, 34, 35, 36];
+  for (const offset of candidates) {
+    if (offset + 3 >= view.byteLength) continue;
+    const first = view.getUint8(offset);
+    const active = (first & 0x80) === 0;
+    const x = (view.getUint8(offset + 1) | ((view.getUint8(offset + 2) & 0x0f) << 8)) / 1919 * 2 - 1;
+    const y = (((view.getUint8(offset + 2) >> 4) | (view.getUint8(offset + 3) << 4)) / 941) * 2 - 1;
+    if (active && x >= -1.05 && x <= 1.05 && y >= -1.05 && y <= 1.05) {
+      return {
+        active,
+        x: Math.max(-1, Math.min(1, x)),
+        y: Math.max(-1, Math.min(1, y))
+      };
+    }
+  }
+  return null;
+}
+
+window.connectTouchpadHid = connectTouchpadHid;
+
+function updateTouchpadUI(state) {
+  const xEl = document.getElementById('axis-6');
+  const yEl = document.getElementById('axis-7');
+  const clickEl = document.getElementById('btn-17');
+  const surface = document.getElementById('touchpad-surface');
+  const dot = document.getElementById('touchpad-dot');
+  const note = document.getElementById('touchpad-note');
+
+  xEl.textContent = state.hasCoordinates ? state.x.toFixed(3) : 'N/A';
+  yEl.textContent = state.hasCoordinates ? state.y.toFixed(3) : 'N/A';
+  clickEl.textContent = state.touchClick ? 'ON' : 'OFF';
+
+  xEl.className = state.touching ? 'active' : '';
+  yEl.className = state.touching ? 'active' : '';
+  clickEl.className = state.touchClick ? 'ok' : '';
+  surface.classList.toggle('active', state.touching);
+
+  if (state.hasCoordinates) {
+    const left = 50 + Math.max(-1, Math.min(1, state.x)) * 45;
+    const top = 50 + Math.max(-1, Math.min(1, state.y)) * 42;
+    dot.style.left = `${left}%`;
+    dot.style.top = `${top}%`;
+    note.textContent = `Touchpad detectado por ${state.source}. Presiona y desliza para revisar respuesta; el click debe marcar ON.`;
+  } else {
+    dot.style.left = '50%';
+    dot.style.top = '50%';
+    note.innerHTML = '<strong>Posición táctil no disponible por Gamepad API.</strong> En DualShock 4 el navegador normalmente solo entrega el click del touchpad como botón 17. Las coordenadas reales requieren WebHID y lectura de reportes HID del control.';
+  }
+}
+
+function getButtonValue(gp, index) {
+  const button = gp.buttons[index];
+  if (!button) return 0;
+  if (typeof button === 'number') return button;
+  if (Number.isFinite(button.value)) return button.value;
+  return button.pressed ? 1 : 0;
+}
+
+function getTriggerValue(gp, buttonIndex, axisIndex) {
+  const buttonValue = getButtonValue(gp, buttonIndex);
+  if (buttonValue > 0.01) return Math.max(0, Math.min(1, buttonValue));
+
+  const axis = gp.axes[axisIndex];
+  if (!Number.isFinite(axis)) return 0;
+
+  // Algunos controles exponen triggers como ejes -1..1 y otros como 0..1.
+  if (axis >= -1 && axis <= 1) {
+    if (axis < -0.8) return 0;
+    if (axis >= 0) return Math.max(0, Math.min(1, axis));
+    return Math.max(0, Math.min(1, (axis + 1) / 2));
+  }
+  return 0;
+}
+
+function setStickVisual(stick, baseX, baseY, x, y, pressed) {
+  if (!stick) return;
+  const magnitude = Math.min(1, Math.hypot(x, y));
+  const cx = baseX + x * 16;
+  const cy = baseY + y * 16;
+  const shade = Math.round(34 + magnitude * 78);
+  const strokeShade = Math.round(68 + magnitude * 72);
+
+  stick.setAttribute('cx', cx);
+  stick.setAttribute('cy', cy);
+  stick.style.fill = pressed ? '#e07b00' : `rgb(${shade}, ${shade}, ${shade})`;
+  stick.style.stroke = pressed ? '#ffb14a' : `rgb(${strokeShade}, ${strokeShade}, ${strokeShade})`;
+  stick.style.opacity = String(Math.min(1, magnitude + 0.35));
+}
+
+function updateStickAxisVisual(side, x, y, drift) {
+  const dot = document.getElementById(`${side}-stick-dot`);
+  const card = document.getElementById(`${side}-stick-card`);
+  if (!dot || !card) return;
+
+  const clampedX = Math.max(-1, Math.min(1, x));
+  const clampedY = Math.max(-1, Math.min(1, y));
+  dot.style.left = `${50 + clampedX * 45}%`;
+  dot.style.top = `${50 + clampedY * 45}%`;
+  card.classList.toggle('warning', drift);
+}
+
+function setStickPressEffect(id, baseX, baseY, x, y, pressed) {
+  const effect = document.getElementById(id);
+  if (!effect) return;
+  effect.classList.toggle('active', pressed);
+  effect.setAttribute('cx', baseX);
+  effect.setAttribute('cy', baseY);
+  effect.setAttribute('r', pressed ? '20' : '15');
+}
+
+function update() {
+  const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+  let gp = null;
+  for (let i = 0; i < gamepads.length; i++) {
+    if (gamepads[i]) { gp = gamepads[i]; break; }
+  }
+  
+  const statusText = document.getElementById('status-text');
+  const controller = document.getElementById('controller');
+  const controllerEmpty = document.getElementById('controller-empty');
+  const axesDisplay = document.getElementById('axes-display');
+  const reportBtn = document.getElementById('report-btn');
+  const resultL = document.getElementById('result-l');
+  const resultR = document.getElementById('result-r');
+  const resultL3 = document.getElementById('result-l3');
+  const resultR3 = document.getElementById('result-r3');
+
+  if (gp) {
+    gamepad = gp;
+    
+    statusText.textContent = 'Conectado';
+
+    if (controller.style.display === 'none') {
+      controller.style.display = 'block';
+      controllerEmpty.style.display = 'none';
+      axesDisplay.style.display = 'grid';
+    }
+
+    const leftX = gp.axes[0] || 0;
+    const leftY = gp.axes[1] || 0;
+    const rightX = gp.axes[2] || 0;
+    const rightY = gp.axes[3] || 0;
+    
+    const l2 = getTriggerValue(gp, 6, 4);
+    const r2 = getTriggerValue(gp, 7, 5);
+
+    const stickLeftInner = document.getElementById('stick-left-inner');
+    const stickRightInner = document.getElementById('stick-right-inner');
+    
+    document.getElementById('L2_percentage').textContent = Math.round(l2 * 100) + '%';
+    document.getElementById('R2_percentage').textContent = Math.round(r2 * 100) + '%';
+    document.getElementById('L2_percentage').setAttribute('opacity', '1');
+    document.getElementById('R2_percentage').setAttribute('opacity', '1');
+
+    const driftLeft = Math.abs(leftX) > threshold || Math.abs(leftY) > threshold;
+    const driftRight = Math.abs(rightX) > threshold || Math.abs(rightY) > threshold;
+    
+    if (stickLeftInner) stickLeftInner.style.fill = driftLeft ? '#ff4500' : '#222';
+    if (stickRightInner) stickRightInner.style.fill = driftRight ? '#ff4500' : '#222';
+
+    document.getElementById('axis-0').textContent = leftX.toFixed(5);
+    document.getElementById('axis-1').textContent = leftY.toFixed(5);
+    document.getElementById('axis-2').textContent = rightX.toFixed(5);
+    document.getElementById('axis-3').textContent = rightY.toFixed(5);
+    ['axis-0','axis-1','axis-2','axis-3'].forEach(id => {
+      const el = document.getElementById(id);
+      el.classList.toggle('warning', Math.abs(parseFloat(el.textContent)) > threshold);
+    });
+
+    updateStickAxisVisual('left', leftX, leftY, driftLeft);
+    updateStickAxisVisual('right', rightX, rightY, driftRight);
+
+    const activeButtons = new Set();
+
+    for (let i = 0; i < gp.buttons.length; i++) {
+      if (!gp.buttons[i]) continue;
+      const pressed = Boolean(gp.buttons[i].pressed || gp.buttons[i].value > 0.5);
+      if (pressed || gp.buttons[i].value > 0.5) {
+        touchedButtons.add(i);
+        activeButtons.add(i);
+      }
+      const btnId = buttonMap[i];
+      if (btnId) {
+        const btnEl = document.getElementById(btnId);
+        if (btnEl) {
+          const path = btnEl.querySelector('path') || btnEl.querySelector('circle') || btnEl.querySelector('rect');
+          if (path) {
+            const defaultFill = btnId === 'Trackpad_infill' ? '#0f0f0f' : (btnId.includes('L1') || btnId.includes('R1') ? '#333' : '#222');
+            const analogValue = i === 6 ? l2 : (i === 7 ? r2 : getButtonValue(gp, i));
+            path.style.fill = (i === 6 || i === 7)
+              ? defaultFill
+              : (analogValue > 0.04 ? `rgba(224, 123, 0, ${Math.min(1, analogValue + 0.25)})` : defaultFill);
+          }
+        }
+      }
+    }
+
+    const pressL = document.getElementById('L3');
+    const pressR = document.getElementById('R3');
+    const l3Pressed = getButtonValue(gp, 10) > 0.5;
+    const r3Pressed = getButtonValue(gp, 11) > 0.5;
+
+    setStickVisual(stickLeftInner, 220, 314.85, leftX, leftY, l3Pressed);
+    setStickVisual(stickRightInner, 420, 314.85, rightX, rightY, r3Pressed);
+    setStickPressEffect('L3_press_effect', 220, 314.85, leftX, leftY, l3Pressed);
+    setStickPressEffect('R3_press_effect', 420, 314.85, rightX, rightY, r3Pressed);
+    
+    if (pressL) {
+      const circle = pressL.querySelector('circle');
+      if (circle) circle.style.fill = l3Pressed ? 'rgba(224,123,0,0.55)' : '#1a1a1a';
+    }
+    if (pressR) {
+      const circle = pressR.querySelector('circle');
+      if (circle) circle.style.fill = r3Pressed ? 'rgba(224,123,0,0.55)' : '#1a1a1a';
+    }
+
+    resultL3.textContent = l3Pressed ? '✓ Presionado' : (touchedButtons.has(10) ? '✓ Probado' : '—');
+    resultL3.className = 'status ' + (l3Pressed || touchedButtons.has(10) ? 'ok' : '');
+    resultR3.textContent = r3Pressed ? '✓ Presionado' : (touchedButtons.has(11) ? '✓ Probado' : '—');
+    resultR3.className = 'status ' + (r3Pressed || touchedButtons.has(11) ? 'ok' : '');
+    
+    const touchpadState = readTouchpadState(gp);
+    if (touchpadState.touchClick || touchpadState.touching) {
+      touchedButtons.add(17);
+      activeButtons.add(17);
+    }
+    updateButtonValidation(activeButtons);
+
+    // Touchpad PS4: el click suele llegar como botón 17; las coordenadas dependen del navegador/controlador.
+    const touchpadInfo = document.getElementById('touchpad-info');
+    if (touchpadInfo.classList.contains('visible')) {
+      updateTouchpadUI(touchpadState);
+    }
+
+    resultL.className = 'status ' + (driftLeft ? 'issue' : 'ok');
+    resultL.textContent = driftLeft ? '⚠️ DRIFT' : '✓ OK';
+    resultR.className = 'status ' + (driftRight ? 'issue' : 'ok');
+    resultR.textContent = driftRight ? '⚠️ DRIFT' : '✓ OK';
+    
+    const shouldersOk = gp.buttons[4]?.pressed !== undefined && gp.buttons[5]?.pressed !== undefined;
+    const dpadOk = (gp.buttons[12]?.pressed !== undefined || gp.buttons[13]?.pressed !== undefined || gp.buttons[14]?.pressed !== undefined || gp.buttons[15]?.pressed !== undefined);
+    const resultShoulders = document.getElementById('result-shoulders');
+    const resultDpad = document.getElementById('result-dpad');
+    if (shouldersOk) {
+      const l1Pressed = gp.buttons[4].pressed;
+      const r1Pressed = gp.buttons[5].pressed;
+      resultShoulders.textContent = (l1Pressed || r1Pressed) ? '✓ Presionado' : '✓ OK';
+      resultShoulders.className = 'status ok';
+    }
+    if (dpadOk) {
+      resultDpad.textContent = '✓ OK';
+      resultDpad.className = 'status ok';
+    }
+    
+    // Touchpad status
+    const resultTouchpad = document.getElementById('result-touchpad');
+    if (touchpadState.touchClick || touchpadState.touching || touchedButtons.has(17)) {
+      resultTouchpad.textContent = '✓ Detectado';
+      resultTouchpad.className = 'status ok';
+    } else if (gp.buttons[17] !== undefined) {
+      resultTouchpad.textContent = 'Listo';
+      resultTouchpad.className = 'status ok';
+    } else {
+      resultTouchpad.textContent = '—';
+      resultTouchpad.className = 'status';
+    }
+
+    const issues = [];
+    if (driftLeft) issues.push('Stick izquierdo con drift');
+    if (driftRight) issues.push('Stick derecho con drift');
+
+    reportBtn.style.display = issues.length > 0 ? 'inline-flex' : 'none';
+  } else {
+    gamepad = null;
+    statusText.textContent = 'Desconectado';
+    controller.style.display = 'none';
+    controllerEmpty.style.display = 'grid';
+    axesDisplay.style.display = 'none';
+    resultL.textContent = '—';
+    resultR.textContent = '—';
+    resultL.className = 'status';
+    resultR.className = 'status';
+    resultL3.textContent = '—';
+    resultR3.textContent = '—';
+    resultL3.className = 'status';
+    resultR3.className = 'status';
+    updateButtonValidation(new Set());
+  }
+  
+  requestAnimationFrame(update);
+}
+
+update();
+
+window.generateReport = function() {
+  const l = document.getElementById('result-l').textContent;
+  const r = document.getElementById('result-r').textContent;
+  const issues = [];
+  if (l.includes('DRIFT')) issues.push('Stick izquierdo con drift');
+  if (r.includes('DRIFT')) issues.push('Stick derecho con drift');
+  
+  const msg = encodeURIComponent('Hola! Test de mi control:\n\n' + 
+    (issues.length > 0 ? issues.join('\n') : 'Sin problemas') +
+    '\n\nQuiero revisión.');
+  window.open('https://wa.me/573045402914?text=' + msg, '_blank');
+};
+</script>
+</body>
+</html>
